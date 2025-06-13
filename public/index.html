@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket.IO Test</title>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <h1>Car Auction WebSocket Test</h1>
+
+  <script>
+    const socket = io('http://localhost:3000');
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server ✅');
+
+      // Join an auction
+      socket.emit('joinAuction', { auctionId: 'auction-123' });
+
+      // Place a bid
+      socket.emit('placeBid', {
+        auctionId: 'auction-123',
+        userId: 'user-123',
+        amount: 5500
+      });
+
+      // Listen for bid updates
+      socket.on('bidUpdate', (data) => {
+        console.log('New highest bid:', data);
+      });
+
+      // Listen for auction end
+      socket.on('auctionEnded', (data) => {
+        console.log('Auction ended:', data);
+      });
+    });
+  </script>
+</body>
+</html>
